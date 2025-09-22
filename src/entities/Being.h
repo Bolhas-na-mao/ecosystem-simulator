@@ -1,4 +1,4 @@
-#include <iostream>
+#pragma once
 
 class Being {
   private:
