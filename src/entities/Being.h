@@ -5,4 +5,4 @@ class Being {
     bool isAlive;
     int energy;
     int ageInSeconds;
-}
+};
