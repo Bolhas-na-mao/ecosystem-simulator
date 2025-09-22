@@ -12,12 +12,12 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 if ! command -v inotifywait &> /dev/null; then
-    echo -e "${YELLOW}📦 Installing inotify-tools for file watching...${NC}"
+    echo -e "${YELLOW}Installing inotify-tools for file watching...${NC}"
     sudo apt install -y inotify-tools
 fi
 
 build_project() {
-    echo -e "${BLUE}🔨 Building project...${NC}"
+    echo -e "${BLUE}Building project...${NC}"
     
     mkdir -p $BUILD_DIR $WEB_DIR
     
@@ -43,7 +43,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "${BLUE}🚀 Starting development server on port $PORT...${NC}"
+echo -e "${BLUE}Starting server on port $PORT...${NC}"
 
 pkill -f "python3 -m http.server $PORT" 2>/dev/null
 
@@ -58,16 +58,16 @@ if command -v xdg-open > /dev/null; then
     xdg-open "http://localhost:$PORT"
 fi
 
-echo -e "${GREEN}✨ Development server running with live reload!${NC}"
-echo -e "${BLUE}Watching for changes in $SRC_DIR/...${NC}"
+echo -e "${GREEN}Development server running${NC}"
+echo -e "${BLUE}Watching $SRC_DIR/ for changes${NC}"
 echo -e "${YELLOW}Press Ctrl+C to stop${NC}"
 
-trap "echo -e '\n${RED}🛑 Stopping server and file watcher...${NC}'; kill $SERVER_PID 2>/dev/null; exit 0" INT
+trap "echo -e '\n${RED}🛑 Stopping server...${NC}'; kill $SERVER_PID 2>/dev/null; exit 0" INT
 
 inotifywait -m -r -e modify,create,delete $SRC_DIR/ --format '%w%f %e' |
 while read file event; do
     if [[ $file == *.cpp ]] || [[ $file == *.c ]] || [[ $file == *.h ]]; then
-        echo -e "${YELLOW}📝 File changed: $file${NC}"
+        echo -e "${YELLOW}Changed: $file${NC}"
         build_project
     fi
 done
