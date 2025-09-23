@@ -52,8 +52,18 @@ jobs:
           emcc --version
           which emcc
 
-      - name: Make dev script executable
-        run: chmod +x ./dev.sh
+      - name: Make build script executable
+        run: chmod +x ./build.sh
 
       - name: Run build script
-        run: ./dev.sh
+        run: ./build.sh
+
+      - name: Check build artifacts
+        run: |
+          ls -la web/
+          if [ -f "web/ecosystem.js" ] && [ -f "web/ecosystem.wasm" ]; then
+            echo "✅ Build artifacts created successfully"
+          else
+            echo "❌ Build artifacts missing"
+            exit 1
+          fi
