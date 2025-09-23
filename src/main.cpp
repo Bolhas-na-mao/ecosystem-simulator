@@ -1,11 +1,12 @@
-#include <iostream>
 #include <emscripten.h>
 
+#include <iostream>
+
 extern "C" {
-    EMSCRIPTEN_KEEPALIVE
-    void hello_ecosystem() {
-        std::cout << "Ecosystem Simulator initialized!\n";
-    }
+EMSCRIPTEN_KEEPALIVE
+void hello_ecosystem() {
+    std::cout << "Ecosystem Simulator initialized!\n";
+}
 }
 
 int main() {
