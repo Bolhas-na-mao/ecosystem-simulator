@@ -1,7 +1,7 @@
 #pragma once
 
 class Being {
-  private:
+   private:
     bool isAlive;
     int energy;
     int ageInSeconds;
