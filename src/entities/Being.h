@@ -2,7 +2,7 @@
 
 class Being {
    private:
-    bool isAlive;
+    bool isAlive = true;
     int energy;
     int ageInSeconds;
 };
