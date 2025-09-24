@@ -2,7 +2,22 @@
 
 class Being {
    private:
-    bool isAlive;
+    bool isAlive = true;
     int energy;
     int ageInSeconds;
+
+   public:
+    Being(int e, int a) : energy(e), ageInSeconds(a) {}
+
+    int getEnergy() {
+        return energy;
+    }
+
+    void increaseEnergy() {
+        energy++;
+    }
+
+    void decreaseEnergy() {
+        energy--;
+    }
 };
