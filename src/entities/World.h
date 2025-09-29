@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 
 #include "Being.h"
 #include "Fox.h"
@@ -51,10 +50,6 @@ class World {
                 i--;
             }
         }
-    };
-
-    void addBeings() {
-
     };
 
    private:
