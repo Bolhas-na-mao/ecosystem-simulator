@@ -26,7 +26,7 @@ class World {
             if(cells[x][y] == nullptr) {
                 cells[x][y] = new Fox();
             } else {
-                continue;
+                i--;
             }
         }
 
@@ -37,7 +37,7 @@ class World {
             if(cells[x][y] == nullptr) {
                 cells[x][y] = new Rabbit();
             } else {
-                continue;
+                i--;
             }
         }
 
@@ -48,7 +48,7 @@ class World {
             if(cells[x][y] == nullptr) {
                 cells[x][y] = new Grass();
             } else {
-                continue;
+                i--;
             }
         }
     };
