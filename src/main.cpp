@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "log.cpp"
+#include "entities/Log.h"
 
 extern "C" {
 EMSCRIPTEN_KEEPALIVE
