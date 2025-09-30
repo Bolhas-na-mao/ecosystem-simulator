@@ -53,10 +53,10 @@ jobs:
           which emcc
 
       - name: Make build script executable
-        run: chmod +x ./build.sh
+        run: chmod +x ./ci.sh
 
       - name: Run build script
-        run: ./build.sh
+        run: ./ci.sh
 
       - name: Check build artifacts
         run: |
