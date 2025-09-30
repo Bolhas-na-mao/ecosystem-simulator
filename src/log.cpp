@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "entities/World.h"
 
 // teste visual antes da implementação visual do ecosistema
