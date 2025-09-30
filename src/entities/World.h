@@ -107,10 +107,11 @@ class World {
                     surroundings.push_back(grid[checkX][checkY]);
                 } else {
                     surroundings.push_back(nullptr);
+                }
             }
-        }
 
-        return surroundings;
+            return surroundings;
+        }
     }
 
     ~World() {
