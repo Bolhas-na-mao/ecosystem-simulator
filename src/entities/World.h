@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include "../utils/Random.h"
 #include "Entity.h"
@@ -16,6 +17,7 @@ class World {
         int y;
     };
     static const int SIZE = 25;
+    static const int VISIBILITY_RANGE = 8;
 
    public:
     Entity* grid[SIZE][SIZE];
@@ -81,6 +83,33 @@ class World {
 
     Entity* check(int x, int y) const {
         return grid[x][y];
+    }
+
+    std::vector<Entity*> checkSurroundings(Entity* e) {
+        auto pos = positions[e];
+
+        int startX = pos.x - VISIBILITY_RANGE;
+        int endX = pos.x + VISIBILITY_RANGE;
+        int startY = pos.y - VISIBILITY_RANGE;
+        int endY = pos.y + VISIBILITY_RANGE;
+
+        std::vector<Entity*> surroundings;
+
+        for(int checkX = startX; checkX <= endX; checkX++) {
+            for(int checkY = startY; checkY <= endY; checkY++) {
+                if(checkX == pos.x && checkY == pos.y) {
+                    continue;
+                }
+
+                bool isInBounds = checkX >= 0 && checkX < SIZE && checkY >= 0 && checkY < SIZE;
+
+                if(isInBounds) {
+                    surroundings.push_back(grid[checkX][checkY]);
+                }
+            }
+        }
+
+        return surroundings;
     }
 
     ~World() {
