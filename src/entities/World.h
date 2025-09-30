@@ -105,7 +105,8 @@ class World {
 
                 if(isInBounds) {
                     surroundings.push_back(grid[checkX][checkY]);
-                }
+                } else {
+                    surroundings.push_back(nullptr);
             }
         }
 
