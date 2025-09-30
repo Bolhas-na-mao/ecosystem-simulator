@@ -9,7 +9,7 @@ void logWorld() {
 
     for(int i = 0; i < 25; i++) {
         for(int j = 0; j < 25; j++) {
-            Being* cell = ecosystem.getCell(i, j);
+            Entity* cell = ecosystem.getCell(i, j);
             if(cell == nullptr) {
                 std::cout << ". ";
             } else {
