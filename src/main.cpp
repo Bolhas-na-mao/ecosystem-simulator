@@ -2,10 +2,14 @@
 
 #include <iostream>
 
+#include "utils/Log.h"
+
 extern "C" {
 EMSCRIPTEN_KEEPALIVE
 void hello_ecosystem() {
     std::cout << "Ecosystem Simulator initialized!\n";
+
+    logWorld();
 }
 }
 

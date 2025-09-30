@@ -1,10 +1,10 @@
 #pragma once
 
+#include "../utils/Random.h"
 #include "Being.h"
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
-#include "Random.h"
 
 class World {
    public:
@@ -51,6 +51,10 @@ class World {
             }
         }
     };
+
+    Being* getCell(int x, int y) const {
+        return cells[x][y];
+    }
 
     ~World() {
         for(int i = 0; i < 25; ++i)

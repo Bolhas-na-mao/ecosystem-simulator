@@ -1,4 +1,3 @@
-#!/bin/bash
 
 BUILD_DIR="build"
 WEB_DIR="web"
@@ -14,7 +13,9 @@ build_project() {
     
     mkdir -p $BUILD_DIR $WEB_DIR
     
-    emcc src/main.cpp \
+    CPP_FILES=$(find $SRC_DIR -name "*.cpp")
+    
+    emcc $CPP_FILES \
         -o $WEB_DIR/ecosystem.js \
         -s WASM=1 \
         -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
@@ -29,7 +30,3 @@ build_project() {
         return 1
     fi
 }
-
-build_project
-
-exit $?
