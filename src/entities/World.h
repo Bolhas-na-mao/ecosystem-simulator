@@ -1,11 +1,13 @@
 #pragma once
 
+#include <unordered_map>
+#include <unordered_set>
+
 #include "../utils/Random.h"
 #include "Entity.h"
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
-
 class World {
    private:
     struct Position {
@@ -88,4 +90,4 @@ class World {
             }
         }
     }
-}
+};
