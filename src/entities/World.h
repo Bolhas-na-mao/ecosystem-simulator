@@ -1,10 +1,10 @@
 #pragma once
 
+#include "../utils/Random.h"
 #include "Being.h"
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
-#include "utils/Random.h"
 
 class World {
    public:
