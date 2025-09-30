@@ -4,7 +4,7 @@
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
-#include "Random.h"
+#include "utils/Random.h"
 
 class World {
    public:
