@@ -8,6 +8,7 @@
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
+
 class World {
    private:
     struct Position {
@@ -36,6 +37,7 @@ class World {
 
             if(grid[x][y] == nullptr) {
                 grid[x][y] = new Fox();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
@@ -47,6 +49,7 @@ class World {
 
             if(grid[x][y] == nullptr) {
                 grid[x][y] = new Rabbit();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
@@ -58,6 +61,7 @@ class World {
 
             if(grid[x][y] == nullptr) {
                 grid[x][y] = new Grass();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
