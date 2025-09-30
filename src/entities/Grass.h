@@ -2,6 +2,5 @@
 
 class Grass : public Being {
    public:
-    Grass() : Being(100, 100) {}
-    void reproduce() override {}
+    Grass() : Being(100) {}
 };
