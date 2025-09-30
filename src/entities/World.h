@@ -1,17 +1,30 @@
 #pragma once
 
+#include <unordered_map>
+#include <unordered_set>
+
 #include "../utils/Random.h"
-#include "Being.h"
+#include "Entity.h"
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
 
 class World {
+   private:
+    struct Position {
+        int x;
+        int y;
+    };
+    static const int SIZE = 25;
+
    public:
+    Entity* grid[SIZE][SIZE];
+    std::unordered_map<Entity*, Position> positions;
+
     World(int foxAmount, int rabbitAmount, int grassAmount) {
-        for(int i = 0; i < 25; i++) {
-            for(int j = 0; j < 25; j++) {
-                cells[i][j] = nullptr;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                grid[i][j] = nullptr;
             }
         }
 
@@ -19,49 +32,66 @@ class World {
         int y = 0;
 
         for(int i = 0; i < foxAmount; i++) {
-            x = Random::getNumber(0, 24);
-            y = Random::getNumber(0, 24);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Fox();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Fox();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
         }
 
         for(int i = 0; i < rabbitAmount; i++) {
-            x = Random::getNumber(0, 24);
-            y = Random::getNumber(0, 24);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Rabbit();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Rabbit();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
         }
 
         for(int i = 0; i < grassAmount; i++) {
-            x = Random::getNumber(0, 24);
-            y = Random::getNumber(0, 24);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Grass();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Grass();
+                positions[grid[x][y]] = {x, y};
             } else {
                 i--;
             }
         }
     };
 
-    Being* getCell(int x, int y) const {
-        return cells[x][y];
+    void move(Entity* e, Position newPos) {
+        auto oldPos = positions[e];
+        grid[oldPos.x][oldPos.y] = nullptr;
+        grid[newPos.x][newPos.y] = e;
+        positions[e] = newPos;
+    }
+
+    Position find(Entity* e) {
+        return positions[e];
+    }
+
+    Entity* check(int x, int y) const {
+        return grid[x][y];
     }
 
     ~World() {
-        for(int i = 0; i < 25; ++i)
-            for(int j = 0; j < 25; ++j)
-                delete cells[i][j];
-    };
-
-   private:
-    Being* cells[25][25];
+        std::unordered_set<Entity*> deleted;
+        for(int i = 0; i < SIZE; ++i) {
+            for(int j = 0; j < SIZE; ++j) {
+                if(grid[i][j] != nullptr && deleted.find(grid[i][j]) == deleted.end()) {
+                    deleted.insert(grid[i][j]);
+                    delete grid[i][j];
+                }
+            }
+        }
+    }
 };
