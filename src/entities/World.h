@@ -7,14 +7,19 @@
 #include "Rabbit.h"
 
 class World {
-   private:
-    int size = 25;
-
    public:
+    static const int SIZE = 25;
+    struct Position {
+        int x;
+        int y;
+    };
+    Entity* grid[SIZE][SIZE];
+    std::unordered_map<Entity*, Position> positions;
+
     World(int foxAmount, int rabbitAmount, int grassAmount) {
-        for(int i = 0; i < size; i++) {
-            for(int j = 0; j < size; j++) {
-                cells[i][j] = nullptr;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                grid[i][j] = nullptr;
             }
         }
 
@@ -22,22 +27,22 @@ class World {
         int y = 0;
 
         for(int i = 0; i < foxAmount; i++) {
-            x = Random::getNumber(0, size - 1);
-            y = Random::getNumber(0, size - 1);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Fox();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Fox();
             } else {
                 i--;
             }
         }
 
         for(int i = 0; i < rabbitAmount; i++) {
-            x = Random::getNumber(0, size - 1);
-            y = Random::getNumber(0, size - 1);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Rabbit();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Rabbit();
             } else {
                 i--;
             }
@@ -47,24 +52,32 @@ class World {
             x = Random::getNumber(0, 24);
             y = Random::getNumber(0, 24);
 
-            if(cells[x][y] == nullptr) {
-                cells[x][y] = new Grass();
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = new Grass();
             } else {
                 i--;
             }
         }
     };
 
-    Entity* getCell(int x, int y) const {
-        return cells[x][y];
+    void move(Entity* e, Position newPos) {
+        auto oldPos = positions[e];
+        grid[oldPos.x][oldPos.y] = nullptr;
+        grid[newPos.x][newPos.y] = e;
+        positions[e] = newPos;
+    }
+
+    Position find(Entity* e) {
+        return positions[e];
+    }
+
+    Entity* check(int x, int y) const {
+        return grid[x][y];
     }
 
     ~World() {
-        for(int i = 0; i < size; ++i)
-            for(int j = 0; j < size; ++j)
-                delete cells[i][j];
+        for(int i = 0; i < SIZE; ++i)
+            for(int j = 0; j < SIZE; ++j)
+                delete grid[i][j];
     };
-
-   private:
-    Entity* cells[size][size];
 };
