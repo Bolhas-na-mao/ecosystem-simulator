@@ -1,4 +1,5 @@
 #!/bin/bash
+source ./build.sh
 
 PORT=8001
 BUILD_DIR="build"
@@ -16,26 +17,6 @@ if ! command -v inotifywait &> /dev/null; then
     sudo apt install -y inotify-tools
 fi
 
-build_project() {
-    echo -e "${BLUE}Building project...${NC}"
-    
-    mkdir -p $BUILD_DIR $WEB_DIR
-    
-    emcc src/main.cpp \
-        -o $WEB_DIR/ecosystem.js \
-        -s WASM=1 \
-        -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
-        -s ALLOW_MEMORY_GROWTH=1 \
-        --bind
-    
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ Build successful! $(date '+%H:%M:%S')${NC}"
-        return 0
-    else
-        echo -e "${RED}❌ Build failed! $(date '+%H:%M:%S')${NC}"
-        return 1
-    fi
-}
 
 build_project
 
