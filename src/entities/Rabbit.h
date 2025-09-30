@@ -1,6 +1,7 @@
-#include "Being.h"
+#include "Animal.h"
 
-class Rabbit : public Being {
+class Rabbit : public Animal {
    public:
-    Rabbit() : Being(100) {}
+    Rabbit() : Animal(100) {}
+    void update(class World& world) override {}
 };

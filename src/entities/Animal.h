@@ -1,12 +1,13 @@
 #pragma once
+#include "Entity.h"
 
-class Being {
+class Animal : public Entity {
    private:
     int energy;
 
    public:
-    Being(int e) : energy(e) {}
-    virtual ~Being() {}
+    Animal(int e) : energy(e) {}
+    virtual ~Animal() {}
 
     int getEnergy() {
         return energy;

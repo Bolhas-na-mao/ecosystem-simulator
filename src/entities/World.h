@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../utils/Random.h"
-#include "Being.h"
+#include "Entity.h"
 #include "Fox.h"
 #include "Grass.h"
 #include "Rabbit.h"
@@ -52,7 +52,7 @@ class World {
         }
     };
 
-    Being* getCell(int x, int y) const {
+    Entity* getCell(int x, int y) const {
         return cells[x][y];
     }
 
@@ -63,5 +63,5 @@ class World {
     };
 
    private:
-    Being* cells[25][25];
+    Entity* cells[25][25];
 };
