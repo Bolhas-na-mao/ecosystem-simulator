@@ -7,12 +7,14 @@
 #include "Rabbit.h"
 
 class World {
-   public:
-    static const int SIZE = 25;
+   private:
     struct Position {
         int x;
         int y;
     };
+    static const int SIZE = 25;
+
+   public:
     Entity* grid[SIZE][SIZE];
     std::unordered_map<Entity*, Position> positions;
 
@@ -49,8 +51,8 @@ class World {
         }
 
         for(int i = 0; i < grassAmount; i++) {
-            x = Random::getNumber(0, 24);
-            y = Random::getNumber(0, 24);
+            x = Random::getNumber(0, SIZE - 1);
+            y = Random::getNumber(0, SIZE - 1);
 
             if(grid[x][y] == nullptr) {
                 grid[x][y] = new Grass();
@@ -76,8 +78,13 @@ class World {
     }
 
     ~World() {
-        for(int i = 0; i < SIZE; ++i)
-            for(int j = 0; j < SIZE; ++j)
-                delete grid[i][j];
-    };
-};
+        std::unordered_set<Entity*> deleted;
+        for(int i = 0; i < SIZE; ++i) {
+            for(int j = 0; j < SIZE; ++j) {
+                if(grid[i][j] != nullptr && deleted.find(grid[i][j]) == deleted.end()) {
+                    deleted.insert(grid[i][j]);
+                    delete grid[i][j];
+                }
+            }
+        }
+    }
