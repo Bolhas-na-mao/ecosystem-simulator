@@ -85,7 +85,14 @@ class World {
         return grid[x][y];
     }
 
-    std::vector<Entity*> checkSurroundings(Entity* e) {
+    std::vector<Entity*> checkSurroundings(Entity* e) const {
+        if(!e)
+            return {};
+        auto it = positions.find(e);
+        if(it == positions.end())
+            return {};
+        const auto& pos = it->second;
+
         auto pos = positions[e];
 
         int startX = pos.x - VISIBILITY_RANGE;
@@ -103,15 +110,11 @@ class World {
 
                 bool isInBounds = checkX >= 0 && checkX < SIZE && checkY >= 0 && checkY < SIZE;
 
-                if(isInBounds) {
-                    surroundings.push_back(grid[checkX][checkY]);
-                } else {
-                    surroundings.push_back(nullptr);
-                }
+                surroundings.push_back(
+                    {isInBounds ? grid[checkX][checkY] : nullptr, isInBounds, checkX, checkY});
             }
-
-            return surroundings;
         }
+        return surroundings;
     }
 
     ~World() {
