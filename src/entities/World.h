@@ -16,6 +16,14 @@ class World {
         int x;
         int y;
     };
+
+    struct SurroundingInfo {
+        Entity* entity;
+        bool isInBounds;
+        int x;
+        int y;
+    };
+
     static const int SIZE = 25;
     static const int VISIBILITY_RANGE = 8;
 
@@ -85,15 +93,13 @@ class World {
         return grid[x][y];
     }
 
-    std::vector<Entity*> checkSurroundings(Entity* e) const {
+    std::vector<SurroundingInfo> checkSurroundings(Entity* e) const {
         if(!e)
             return {};
         auto it = positions.find(e);
         if(it == positions.end())
             return {};
         const auto& pos = it->second;
-
-        auto pos = positions[e];
 
         int startX = pos.x - VISIBILITY_RANGE;
         int endX = pos.x + VISIBILITY_RANGE;
