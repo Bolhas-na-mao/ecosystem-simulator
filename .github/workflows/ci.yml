@@ -1,4 +1,4 @@
-name: C++ WebAssembly CI
+name: CI
 
 on:
   pull_request:
@@ -35,7 +35,7 @@ jobs:
           xargs clang-tidy --config-file=.clang-tidy || echo "clang-tidy completed with warnings"
 
   build:
-    name: Build WebAssembly
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
