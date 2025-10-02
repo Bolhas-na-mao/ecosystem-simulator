@@ -13,8 +13,8 @@
 class World {
    private:
     struct Position {
-        int x;
-        int y;
+        int x = 0;
+        int y = 0;
     };
     static const int SIZE = 25;
     static const int VISIBILITY_RANGE = 8;
