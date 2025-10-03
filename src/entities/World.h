@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+#include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -13,8 +15,8 @@
 class World {
    private:
     struct Position {
-        int x;
-        int y;
+        int x = 0;
+        int y = 0;
     };
 
     struct SurroundingData {
@@ -22,6 +24,20 @@ class World {
         bool isInBounds;
         int x;
         int y;
+    };
+
+    void placeEntities(int count, std::function<Entity*()> createEntity) {
+        for(int i = 0; i < count; i++) {
+            int x = Random::getNumber(0, SIZE - 1);
+            int y = Random::getNumber(0, SIZE - 1);
+
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = createEntity();
+                positions[grid[x][y]] = {x, y};
+            } else {
+                i--;
+            }
+        }
     };
 
     static const int SIZE = 25;
@@ -32,50 +48,19 @@ class World {
     std::unordered_map<Entity*, Position> positions;
 
     World(int foxAmount, int rabbitAmount, int grassAmount) {
+        if(foxAmount + rabbitAmount + grassAmount > SIZE * SIZE) {
+            throw std::invalid_argument("Too many entities for grid size");
+        }
+
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
                 grid[i][j] = nullptr;
             }
         }
 
-        int x = 0;
-        int y = 0;
-
-        for(int i = 0; i < foxAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Fox();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
-
-        for(int i = 0; i < rabbitAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Rabbit();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
-
-        for(int i = 0; i < grassAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Grass();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
+        placeEntities(foxAmount, []() { return new Fox(); });
+        placeEntities(rabbitAmount, []() { return new Rabbit(); });
+        placeEntities(grassAmount, []() { return new Grass(); });
     };
 
     void move(Entity* e, Position newPos) {
