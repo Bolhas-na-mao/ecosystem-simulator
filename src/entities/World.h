@@ -56,9 +56,6 @@ class World {
             }
         }
 
-        int x = 0;
-        int y = 0;
-
         placeEntities(foxAmount, []() { return new Fox(); });
         placeEntities(rabbitAmount, []() { return new Rabbit(); });
         placeEntities(grassAmount, []() { return new Grass(); });
