@@ -24,6 +24,20 @@ class World {
         int y;
     };
 
+    void placeEntities(int count, std::function<Entity*()> createEntity) {
+        for(int i = 0; i < count; i++) {
+            int x = Random::getNumber(0, SIZE - 1);
+            int y = Random::getNumber(0, SIZE - 1);
+
+            if(grid[x][y] == nullptr) {
+                grid[x][y] = createEntity();
+                positions[grid[x][y]] = {x, y};
+            } else {
+                i--;
+            }
+        }
+    };
+
     static const int SIZE = 25;
     static const int VISIBILITY_RANGE = 8;
 
@@ -45,41 +59,9 @@ class World {
         int x = 0;
         int y = 0;
 
-        for(int i = 0; i < foxAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Fox();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
-
-        for(int i = 0; i < rabbitAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Rabbit();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
-
-        for(int i = 0; i < grassAmount; i++) {
-            x = Random::getNumber(0, SIZE - 1);
-            y = Random::getNumber(0, SIZE - 1);
-
-            if(grid[x][y] == nullptr) {
-                grid[x][y] = new Grass();
-                positions[grid[x][y]] = {x, y};
-            } else {
-                i--;
-            }
-        }
+        placeEntities(foxAmount, []() { return new Fox(); });
+        placeEntities(rabbitAmount, []() { return new Rabbit(); });
+        placeEntities(grassAmount, []() { return new Grass(); });
     };
 
     void move(Entity* e, Position newPos) {
