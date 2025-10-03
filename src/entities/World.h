@@ -32,6 +32,10 @@ class World {
     std::unordered_map<Entity*, Position> positions;
 
     World(int foxAmount, int rabbitAmount, int grassAmount) {
+        if(foxAmount + rabbitAmount + grassAmount > SIZE * SIZE) {
+            throw std::invalid_argument("Too many entities for grid size");
+        }
+
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
                 grid[i][j] = nullptr;
