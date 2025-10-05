@@ -18,7 +18,7 @@ Checks: >
 
 WarningsAsErrors: ""
 
-HeaderFilterRegex: ".*"
+HeaderFilterRegex: "^(src|include)/.*"
 
 CheckOptions:
   - key: readability-identifier-naming.NamespaceCase
