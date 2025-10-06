@@ -36,9 +36,9 @@ class World {
     static const int VISIBILITY_RANGE = 8;
 
    public:
+    static const int SIZE = 25;
     Entity* grid[SIZE][SIZE];
     std::unordered_map<Entity*, Position> positions;
-    static const int SIZE = 25;
 
     struct SurroundingData {
         Entity* entity;
