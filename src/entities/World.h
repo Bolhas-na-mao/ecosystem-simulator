@@ -106,7 +106,6 @@ class World {
         grid[predatorPos.x][predatorPos.y] = nullptr;
         grid[preyPos.x][preyPos.y] = predator;
 
-        positions.erase(prey);
         positions[predator] = preyPos;
 
         predator->increaseEnergy(4);
