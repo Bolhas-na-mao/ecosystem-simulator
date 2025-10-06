@@ -4,8 +4,15 @@
 
 // teste visual antes da implementação visual do ecosistema
 
+World ecosystem(15, 15, 15);
+bool isFirstTime = true;
+
 void logWorld() {
-    World ecosystem(15, 15, 15);
+    if(isFirstTime) {
+        isFirstTime = false;
+    } else {
+        ecosystem.tick();
+    }
 
     for(int i = 0; i < 25; i++) {
         for(int j = 0; j < 25; j++) {
