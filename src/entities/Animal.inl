@@ -5,6 +5,43 @@
 #include "Animal.h"
 #include "World.h"
 
+template <typename AnimalType>
+bool Animal::reproduce(World& world) {
+    auto myPos = world.find(this);
+
+    std::vector<std::pair<int, int>> emptySpaces;
+
+    for(int dx = -1; dx <= 1; dx++) {
+        for(int dy = -1; dy <= 1; dy++) {
+            if(dx == 0 && dy == 0)
+                continue;
+
+            int checkX = myPos.x + dx;
+            int checkY = myPos.y + dy;
+
+            if(checkX >= 0 && checkX < World::SIZE && checkY >= 0 && checkY < World::SIZE &&
+               world.check(checkX, checkY) == nullptr) {
+                emptySpaces.push_back({checkX, checkY});
+            }
+        }
+    }
+
+    if(emptySpaces.empty()) {
+        return false;
+    }
+
+    int randomIndex = Random::getNumber(0, emptySpaces.size() - 1);
+    auto spawnPos = emptySpaces[randomIndex];
+
+    Entity* offspring = createOffspring();
+    world.grid[spawnPos.first][spawnPos.second] = offspring;
+    world.positions[offspring] = {spawnPos.first, spawnPos.second};
+
+    decreaseEnergy();
+
+    return true;
+}
+
 template <typename TargetType, typename SurroundingDataVec>
 bool Animal::moveTowardClosest(World& world, const SurroundingDataVec& targets) {
     if(targets.empty()) {
