@@ -100,10 +100,15 @@ class World {
 
     void eat(Entity* prey, Entity* predator) {
         auto preyPos = find(prey);
+        auto predatorPos = find(predator);
 
         kill(prey);
 
-        move(predator, preyPos);
+        grid[predatorPos.x][predatorPos.y] = nullptr;
+        grid[preyPos.x][preyPos.y] = predator;
+
+        positions.erase(prey);
+        positions[predator] = preyPos;
 
         Animal* predatorAnimal = dynamic_cast<Animal*>(predator);
         if(predatorAnimal) {
