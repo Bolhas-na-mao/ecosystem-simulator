@@ -97,7 +97,7 @@ class World {
         positions[e] = newPos;
     }
 
-    void eat(Entity* prey, Entity* predator) {
+    void eat(Entity* prey, Animal* predator) {
         auto preyPos = find(prey);
         auto predatorPos = find(predator);
 
@@ -109,10 +109,7 @@ class World {
         positions.erase(prey);
         positions[predator] = preyPos;
 
-        Animal* predatorAnimal = dynamic_cast<Animal*>(predator);
-        if(predatorAnimal) {
-            predatorAnimal->increaseEnergy(4);
-        }
+        predator->increaseEnergy(4);
     }
 
     void kill(Entity* entity) {
