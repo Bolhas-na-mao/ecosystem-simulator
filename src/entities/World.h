@@ -63,6 +63,21 @@ class World {
         placeEntities(grassAmount, []() { return new Grass(); });
     };
 
+    void tick() {
+        std::vector<Entity*> allEntities;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(grid[i][j] != nullptr) {
+                    allEntities.push_back(grid[i][j]);
+                }
+            }
+        }
+
+        for(Entity* e : allEntities) {
+            e->update(*this);
+        }
+    }
+
     void move(Entity* e, Position newPos) {
         auto oldPos = positions[e];
         grid[oldPos.x][oldPos.y] = nullptr;
