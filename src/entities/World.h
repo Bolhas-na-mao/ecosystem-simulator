@@ -14,6 +14,7 @@
 
 class World {
    private:
+    std::unordered_set<Entity*> entitiesToDelete;
     struct Position {
         int x = 0;
         int y = 0;
@@ -64,6 +65,8 @@ class World {
     };
 
     void tick() {
+        entitiesToDelete.clear();
+
         std::vector<Entity*> allEntities;
         for(int i = 0; i < SIZE; i++) {
             for(int j = 0; j < SIZE; j++) {
@@ -74,8 +77,18 @@ class World {
         }
 
         for(Entity* e : allEntities) {
-            e->update(*this);
+            if(entitiesToDelete.find(e) == entitiesToDelete.end()) {
+                e->update(*this);
+            }
         }
+
+        for(Entity* e : entitiesToDelete) {
+            auto entityPos = find(e);
+            grid[entityPos.x][entityPos.y] = nullptr;
+            positions.erase(e);
+            delete e;
+        }
+        entitiesToDelete.clear();
     }
 
     void move(Entity* e, Position newPos) {
@@ -99,13 +112,7 @@ class World {
     }
 
     void kill(Entity* entity) {
-        auto entityPos = find(entity);
-
-        grid[entityPos.x][entityPos.y] = nullptr;
-
-        positions.erase(entity);
-
-        delete entity;
+        entitiesToDelete.insert(entity);
     }
 
     Position find(Entity* e) {
