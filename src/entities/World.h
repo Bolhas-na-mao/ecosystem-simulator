@@ -92,7 +92,10 @@ class World {
 
         move(predator, preyPos);
 
-        predator->increaseEnergy();
+        Animal* predatorAnimal = dynamic_cast<Animal*>(predator);
+        if(predatorAnimal) {
+            predatorAnimal->increaseEnergy();
+        }
     }
 
     void kill(Entity* entity) {
