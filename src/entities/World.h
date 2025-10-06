@@ -88,7 +88,6 @@ class World {
             positions.erase(e);
             delete e;
         }
-        entitiesToDelete.clear();
     }
 
     void move(Entity* e, Position newPos) {
