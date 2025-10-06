@@ -83,9 +83,14 @@ class World {
         }
 
         for(Entity* e : entitiesToDelete) {
-            auto entityPos = find(e);
-            grid[entityPos.x][entityPos.y] = nullptr;
-            positions.erase(e);
+            auto posIt = positions.find(e);
+            if(posIt != positions.end()) {
+                const auto entityPos = posIt->second;
+                if(grid[entityPos.x][entityPos.y] == e) {
+                    grid[entityPos.x][entityPos.y] = nullptr;
+                }
+                positions.erase(posIt);
+            }
             delete e;
         }
     }
