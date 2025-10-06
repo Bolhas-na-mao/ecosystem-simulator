@@ -17,6 +17,10 @@ void Rabbit::update(World& world) {
         return;
     }
 
+    if(energy >= 10) {
+        reproduce<Rabbit>(world);
+    }
+
     auto surroundings = world.checkSurroundings(this);
 
     std::vector<World::SurroundingData> grasses;
