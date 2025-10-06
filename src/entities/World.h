@@ -14,16 +14,10 @@
 
 class World {
    private:
+    std::unordered_set<Entity*> entitiesToDelete;
     struct Position {
         int x = 0;
         int y = 0;
-    };
-
-    struct SurroundingData {
-        Entity* entity;
-        bool isInBounds;
-        int x;
-        int y;
     };
 
     void placeEntities(int count, std::function<Entity*()> createEntity) {
@@ -40,12 +34,19 @@ class World {
         }
     };
 
-    static const int SIZE = 25;
     static const int VISIBILITY_RANGE = 8;
 
    public:
+    static const int SIZE = 25;
     Entity* grid[SIZE][SIZE];
     std::unordered_map<Entity*, Position> positions;
+
+    struct SurroundingData {
+        Entity* entity;
+        bool isInBounds;
+        int x;
+        int y;
+    };
 
     World(int foxAmount, int rabbitAmount, int grassAmount) {
         if(foxAmount + rabbitAmount + grassAmount > SIZE * SIZE) {
@@ -63,11 +64,90 @@ class World {
         placeEntities(grassAmount, []() { return new Grass(); });
     };
 
+    void spreadGrass() {
+        int newGrassCount = Random::getNumber(1, 5);
+
+        std::vector<std::pair<int, int>> emptySpots;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(grid[i][j] == nullptr) {
+                    emptySpots.push_back({i, j});
+                }
+            }
+        }
+
+        if(emptySpots.empty()) {
+            return;
+        }
+
+        for(int i = 0; i < newGrassCount && !emptySpots.empty(); i++) {
+            int randomIndex = Random::getNumber(0, emptySpots.size() - 1);
+            auto pos = emptySpots[randomIndex];
+
+            Grass* newGrass = new Grass();
+            grid[pos.first][pos.second] = newGrass;
+            positions[newGrass] = {pos.first, pos.second};
+
+            emptySpots.erase(emptySpots.begin() + randomIndex);
+        }
+    };
+
+    void tick() {
+        entitiesToDelete.clear();
+
+        spreadGrass();
+
+        std::vector<Entity*> allEntities;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(grid[i][j] != nullptr) {
+                    allEntities.push_back(grid[i][j]);
+                }
+            }
+        }
+
+        for(Entity* e : allEntities) {
+            if(entitiesToDelete.find(e) == entitiesToDelete.end()) {
+                e->update(*this);
+            }
+        }
+
+        for(Entity* e : entitiesToDelete) {
+            auto posIt = positions.find(e);
+            if(posIt != positions.end()) {
+                const auto entityPos = posIt->second;
+                if(grid[entityPos.x][entityPos.y] == e) {
+                    grid[entityPos.x][entityPos.y] = nullptr;
+                }
+                positions.erase(posIt);
+            }
+            delete e;
+        }
+    }
+
     void move(Entity* e, Position newPos) {
         auto oldPos = positions[e];
         grid[oldPos.x][oldPos.y] = nullptr;
         grid[newPos.x][newPos.y] = e;
         positions[e] = newPos;
+    }
+
+    void eat(Entity* prey, Animal* predator) {
+        auto preyPos = find(prey);
+        auto predatorPos = find(predator);
+
+        kill(prey);
+
+        grid[predatorPos.x][predatorPos.y] = nullptr;
+        grid[preyPos.x][preyPos.y] = predator;
+
+        positions[predator] = preyPos;
+
+        predator->increaseEnergy(4);
+    }
+
+    void kill(Entity* entity) {
+        entitiesToDelete.insert(entity);
     }
 
     Position find(Entity* e) {

@@ -13,11 +13,19 @@ class Animal : public Entity {
         return energy;
     }
 
-    void increaseEnergy() {
-        energy++;
+    void increaseEnergy(int e) {
+        energy = energy + e;
     }
 
     void decreaseEnergy() {
         energy--;
     }
+
+   protected:
+    template <typename TargetType, typename SurroundingDataVec>
+    bool moveTowardClosest(World& world, const SurroundingDataVec& targets);
+
+    template <typename AnimalType>
+    bool reproduce(World& world);
+    virtual Entity* createOffspring() = 0;
 };
