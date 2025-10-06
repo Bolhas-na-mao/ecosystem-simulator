@@ -4,6 +4,6 @@
 
 class Rabbit : public Animal {
    public:
-    Rabbit() : Animal(100) {}
+    Rabbit() : Animal(10) {}
     void update(World& world) override;
 };
