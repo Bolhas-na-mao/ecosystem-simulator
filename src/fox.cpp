@@ -3,9 +3,9 @@
 #include <cmath>
 #include <iostream>
 
+#include "./entities/Rabbit.h"
 #include "./entities/World.h"
 #include "./utils/Random.h"
-#include "Rabbit.h"
 
 void Fox::update(World& world) {
     decreaseEnergy();
