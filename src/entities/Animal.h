@@ -20,4 +20,8 @@ class Animal : public Entity {
     void decreaseEnergy() {
         energy--;
     }
+
+   protected:
+    template <typename TargetType, typename SurroundingDataVec>
+    bool moveTowardClosest(World& world, const SurroundingDataVec& targets);
 };
