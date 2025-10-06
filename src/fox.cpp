@@ -53,8 +53,11 @@ void Fox::update(World& world) {
         int dy = closest->y - myPos.y;
 
         if(abs(dx) <= 1 && abs(dy) <= 1) {
-            world.eat(closest->entity, this);
-            return;
+            Entity* target = world.check(closest->x, closest->y);
+            if(target != nullptr && dynamic_cast<Rabbit*>(target) != nullptr) {
+                world.eat(target, this);
+                return;
+            }
         }
 
         int moveX = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
