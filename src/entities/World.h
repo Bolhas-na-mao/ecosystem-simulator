@@ -111,7 +111,7 @@ class World {
 
         Animal* predatorAnimal = dynamic_cast<Animal*>(predator);
         if(predatorAnimal) {
-            predatorAnimal->increaseEnergy();
+            predatorAnimal->increaseEnergy(4);
         }
     }
 

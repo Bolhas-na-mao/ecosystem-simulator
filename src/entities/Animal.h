@@ -13,8 +13,8 @@ class Animal : public Entity {
         return energy;
     }
 
-    void increaseEnergy() {
-        energy++;
+    void increaseEnergy(int e) {
+        energy = energy + e;
     }
 
     void decreaseEnergy() {
