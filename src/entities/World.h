@@ -33,12 +33,12 @@ class World {
         }
     };
 
-    static const int SIZE = 25;
     static const int VISIBILITY_RANGE = 8;
 
    public:
     Entity* grid[SIZE][SIZE];
     std::unordered_map<Entity*, Position> positions;
+    static const int SIZE = 25;
 
     struct SurroundingData {
         Entity* entity;
@@ -83,6 +83,26 @@ class World {
         grid[oldPos.x][oldPos.y] = nullptr;
         grid[newPos.x][newPos.y] = e;
         positions[e] = newPos;
+    }
+
+    void eat(Entity* prey, Entity* predator) {
+        auto preyPos = find(prey);
+
+        kill(prey);
+
+        move(predator, preyPos);
+
+        predator->increaseEnergy();
+    }
+
+    void kill(Entity* entity) {
+        auto entityPos = find(entity);
+
+        grid[entityPos.x][entityPos.y] = nullptr;
+
+        positions.erase(entity);
+
+        delete entity;
     }
 
     Position find(Entity* e) {
