@@ -64,8 +64,38 @@ class World {
         placeEntities(grassAmount, []() { return new Grass(); });
     };
 
+    void spreadGrass() {
+        int newGrassCount = Random::getNumber(1, 5);
+
+        std::vector<std::pair<int, int>> emptySpots;
+        for(int i = 0; i < SIZE; i++) {
+            for(int j = 0; j < SIZE; j++) {
+                if(grid[i][j] == nullptr) {
+                    emptySpots.push_back({i, j});
+                }
+            }
+        }
+
+        if(emptySpots.empty()) {
+            return;
+        }
+
+        for(int i = 0; i < newGrassCount && !emptySpots.empty(); i++) {
+            int randomIndex = Random::getNumber(0, emptySpots.size() - 1);
+            auto pos = emptySpots[randomIndex];
+
+            Grass* newGrass = new Grass();
+            grid[pos.first][pos.second] = newGrass;
+            positions[newGrass] = {pos.first, pos.second};
+
+            emptySpots.erase(emptySpots.begin() + randomIndex);
+        }
+    };
+
     void tick() {
         entitiesToDelete.clear();
+
+        spreadGrass();
 
         std::vector<Entity*> allEntities;
         for(int i = 0; i < SIZE; i++) {

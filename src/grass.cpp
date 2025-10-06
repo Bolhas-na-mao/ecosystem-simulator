@@ -4,6 +4,4 @@
 
 #include "./entities/World.h"
 
-void Grass::update(World& world) {
-    auto surroundings = world.checkSurroundings(this);
-}
+void Grass::update(World& world) {}
