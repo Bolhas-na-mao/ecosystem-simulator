@@ -1,7 +1,9 @@
+#pragma once
+
 #include "Entity.h"
 
 class Grass : public Entity {
    public:
     Grass() {}
-    void update(class World& world) override {}
+    void update(World& world) override;
 };
