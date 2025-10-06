@@ -18,9 +18,12 @@ void Fox::update(World& world) {
         return;
     }
 
+    if(energy >= 10) {
+        reproduce<Fox>(world);
+    }
+
     auto surroundings = world.checkSurroundings(this);
 
-    // Filter for rabbit entities
     std::vector<World::SurroundingData> rabbits;
 
     for(const auto& data : surroundings) {
@@ -34,14 +37,12 @@ void Fox::update(World& world) {
         }
     }
 
-    // Try to move toward and eat rabbits
     if(!rabbits.empty()) {
         if(moveTowardClosest<Rabbit>(world, rabbits)) {
             return;
         }
     }
 
-    // No rabbits found or couldn't move - wander randomly
     auto myPos = world.find(this);
     std::vector<std::pair<int, int>> availableMoves;
 
