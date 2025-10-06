@@ -24,4 +24,5 @@ class Animal : public Entity {
    protected:
     template <typename TargetType, typename SurroundingDataVec>
     bool moveTowardClosest(World& world, const SurroundingDataVec& targets);
+    virtual Entity* createOffspring() = 0;
 };
