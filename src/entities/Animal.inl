@@ -69,7 +69,7 @@ bool Animal::moveTowardClosest(World& world, const SurroundingDataVec& targets) 
 
     bool hasAdjacent = abs(dx) <= 1 && abs(dy) <= 1;
 
-    if(abs(dx) <= 1 && abs(dy) <= 1) {
+    if(hasAdjacent) {
         Entity* target = world.check(closest->x, closest->y);
 
         bool isTargetStillThere = target != nullptr && dynamic_cast<TargetType*>(target) != nullptr;
