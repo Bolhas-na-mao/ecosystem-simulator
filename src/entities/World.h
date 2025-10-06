@@ -19,13 +19,6 @@ class World {
         int y = 0;
     };
 
-    struct SurroundingData {
-        Entity* entity;
-        bool isInBounds;
-        int x;
-        int y;
-    };
-
     void placeEntities(int count, std::function<Entity*()> createEntity) {
         for(int i = 0; i < count; i++) {
             int x = Random::getNumber(0, SIZE - 1);
@@ -46,6 +39,13 @@ class World {
    public:
     Entity* grid[SIZE][SIZE];
     std::unordered_map<Entity*, Position> positions;
+
+    struct SurroundingData {
+        Entity* entity;
+        bool isInBounds;
+        int x;
+        int y;
+    };
 
     World(int foxAmount, int rabbitAmount, int grassAmount) {
         if(foxAmount + rabbitAmount + grassAmount > SIZE * SIZE) {
