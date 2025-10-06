@@ -54,7 +54,10 @@ void Fox::update(World& world) {
 
         if(abs(dx) <= 1 && abs(dy) <= 1) {
             Entity* target = world.check(closest->x, closest->y);
-            if(target != nullptr && dynamic_cast<Rabbit*>(target) != nullptr) {
+
+            bool isRabbitStillThere = target != nullptr && dynamic_cast<Rabbit*>(target) != nullptr;
+
+            if(isRabbitStillThere) {
                 world.eat(target, this);
                 return;
             }
