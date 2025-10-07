@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
   <head>
-    <title>Ecosystem Simulator</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Simulador de ecossistema</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Ecosystem Simulator</h1>
-    <button onclick="Module._hello_ecosystem()">Initialize Ecosystem</button>
+    <div class="container">
+      <div class="left-section">
+        <h1>Ecossistema</h1>
+        <div class="grid" id="grid"></div>
+      </div>
+      <div class="right-section">
+        <div class="timer">
+          <div class="timer-label">Tempo</div>
+          <div class="timer-value">12:32</div>
+        </div>
+        <button class="start-button" id="start-button">Iniciar</button>
+      </div>
+    </div>
+    <script src="render.js"></script>
     <script src="ecosystem.js"></script>
   </body>
 </html>

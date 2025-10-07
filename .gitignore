@@ -1,6 +1,4 @@
 web/ecosystem.js
-web/ecosystem.wasm
-web/*.js
 web/*.wasm
 *.js.map
 *.wasm.map

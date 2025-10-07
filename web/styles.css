@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Courier New", monospace;
+  background: #f4ead5;
+  color: #2d3319;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+.container {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 32px;
+  color: #3d4a1f;
+  text-transform: uppercase;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(25, 20px);
+  grid-template-rows: repeat(25, 20px);
+  gap: 1px;
+  background: #c4b89a;
+  border: 2px solid #5a6634;
+  padding: 1px;
+}
+
+.cell {
+  width: 20px;
+  height: 20px;
+  background: #e8dcc0;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background: #d4c8aa;
+}
+
+.cell:focus {
+  background: #d4c8aa;
+  outline: 2px solid #5a6634;
+  outline-offset: -2px;
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.timer {
+  background: #5a6634;
+  color: #f4ead5;
+  padding: 16px 28px;
+  border: 2px solid #3d4a1f;
+  text-align: center;
+}
+
+.timer-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+.timer-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.start-button {
+  background: #7a8f4a;
+  color: #f4ead5;
+  border: 2px solid #5a6634;
+  padding: 18px 36px;
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.start-button:hover {
+  background: #8ba057;
+  border-color: #3d4a1f;
+}
+
+.start-button:active {
+  transform: translateY(2px);
+}
