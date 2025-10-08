@@ -5,14 +5,14 @@
   --color-forest-dark: #2d3319;
   --color-ocean-green: #40916c;
   --color-mint-medium: #77bfa3;
-  
+
   /* Secondary Colors */
   --color-mint-light: #b8dcc5ff;
   --color-mint-hover: #aac6b4ff;
   --color-mint-active: #9bc4a9ff;
   --color-cream: #f4ead5;
   --color-coral: #ff4d6d;
-  
+
   /* Spacing */
   --spacing-xs: 6px;
   --spacing-sm: 16px;
@@ -20,10 +20,10 @@
   --spacing-lg: 32px;
   --spacing-xl: 40px;
   --spacing-2xl: 60px;
-  
+
   /* Border Radius */
   --radius-sm: 4px;
-  
+
   /* Transitions */
   --transition-default: 0.15s ease;
 }
@@ -69,8 +69,8 @@ h1 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(25, 20px);
-  grid-template-rows: repeat(25, 20px);
+  grid-template-columns: repeat(25, 25px);
+  grid-template-rows: repeat(25, 25px);
   gap: 1px;
   background: var(--color-mint-medium);
   border: 1px solid var(--color-mint-medium);
@@ -79,8 +79,8 @@ h1 {
 }
 
 .cell {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background: var(--color-mint-light);
   cursor: pointer;
   transition: background var(--transition-default);
@@ -136,7 +136,8 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 2px;
   cursor: pointer;
-  transition: background var(--transition-default), border-color var(--transition-default);
+  transition: background var(--transition-default),
+    border-color var(--transition-default);
 }
 
 .start-button:hover {
