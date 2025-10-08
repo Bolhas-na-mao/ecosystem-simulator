@@ -8,7 +8,7 @@ body {
   font-family: "DM Mono", monospace;
   font-weight: 400;
   font-style: normal;
-  background: #f4ead5;
+  background: #daeaddff;
   color: #2d3319;
   display: flex;
   justify-content: center;
@@ -31,9 +31,10 @@ body {
 
 h1 {
   font-size: 2.8rem;
+  font-weight: 700;
   letter-spacing: -1px;
   margin-bottom: 32px;
-  color: #3d4a1f;
+  color: #2d6a4f;
 }
 
 .grid {
@@ -41,25 +42,27 @@ h1 {
   grid-template-columns: repeat(25, 20px);
   grid-template-rows: repeat(25, 20px);
   gap: 1px;
-  background: #c4b89a;
-  border: 2px solid #5a6634;
+  background: #77bfa3;
+  border: 1px solid #77bfa3;
+  border-radius: 4px;
   padding: 1px;
 }
 
 .cell {
   width: 20px;
   height: 20px;
-  background: #e8dcc0;
+  background: #b8dcc5ff;
   cursor: pointer;
+  transition: colors 0.15s ease;
 }
 
 .cell:hover {
-  background: #d4c8aa;
+  background: #aac6b4ff;
 }
 
 .cell:focus {
-  background: #d4c8aa;
-  outline: 2px solid #5a6634;
+  background: #9bc4a9ff;
+  outline: 2px solid #40916c;
   outline-offset: -2px;
 }
 
@@ -70,10 +73,10 @@ h1 {
 }
 
 .timer {
-  background: #5a6634;
+  background: #40916c;
   color: #f4ead5;
   padding: 16px 28px;
-  border: 2px solid #3d4a1f;
+  border-radius: 4px;
   text-align: center;
 }
 
@@ -92,9 +95,10 @@ h1 {
 }
 
 .start-button {
-  background: #7a8f4a;
+  background: #ff4d6d;
   color: #f4ead5;
-  border: 2px solid #5a6634;
+  border: 2px solid #ff4d6d;
+  border-radius: 4px;
   padding: 18px 36px;
   font-family: "Courier New", monospace;
   font-size: 1rem;
@@ -102,12 +106,13 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 2px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: colors 0.15s ease;
 }
 
 .start-button:hover {
-  background: #8ba057;
-  border-color: #3d4a1f;
+  background: #40916c;
+  border-color: #40916c;
+  border-radius: 4px;
 }
 
 .start-button:active {
