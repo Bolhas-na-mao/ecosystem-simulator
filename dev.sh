@@ -40,15 +40,18 @@ if command -v xdg-open > /dev/null; then
 fi
 
 echo -e "${GREEN}Development server running${NC}"
-echo -e "${BLUE}Watching $SRC_DIR/ for changes${NC}"
+echo -e "${BLUE}Watching $SRC_DIR/ and $WEB_DIR/ for changes${NC}"
 echo -e "${YELLOW}Press Ctrl+C to stop${NC}"
 
 trap "echo -e '\n${RED}🛑 Stopping server...${NC}'; kill $SERVER_PID 2>/dev/null; exit 0" INT
 
-inotifywait -m -r -e modify,create,delete $SRC_DIR/ --format '%w%f %e' |
+inotifywait -m -r -e modify,create,delete $SRC_DIR/ $WEB_DIR/ --format '%w%f %e' |
 while read file event; do
     if [[ $file == *.cpp ]] || [[ $file == *.c ]] || [[ $file == *.h ]]; then
         echo -e "${YELLOW}Changed: $file${NC}"
         build_project
+    elif [[ $file == $WEB_DIR/* ]]; then
+        echo -e "${YELLOW}Web file changed: $file${NC}"
+        echo -e "${GREEN}✓ Reload browser to see changes${NC}"
     fi
 done
