@@ -31,15 +31,18 @@ export class Grid {
 
         switch (entityType) {
           case ENTITY_FOX:
-            cell.innerHTML = '<img src="assets/fox.png" alt="Fox" class="entity-sprite">';
+            cell.innerHTML =
+              '<img src="assets/fox.png" alt="Fox" class="entity-sprite">';
             cell.classList.add("fox");
             break;
           case ENTITY_RABBIT:
-            cell.innerHTML = '<img src="assets/rabbit.png" alt="Rabbit" class="entity-sprite">';
+            cell.innerHTML =
+              '<img src="assets/rabbit.png" alt="Rabbit" class="entity-sprite">';
             cell.classList.add("rabbit");
             break;
           case ENTITY_GRASS:
-            cell.innerHTML = '<img src="assets/grass.png" alt="Grass" class="entity-sprite">';
+            cell.innerHTML =
+              '<img src="assets/grass.png" alt="Grass" class="entity-sprite">';
             cell.classList.add("grass");
             break;
         }
@@ -58,11 +61,13 @@ export class Grid {
 
   onCellClick(callback) {
     this.gridElement.addEventListener("click", (event) => {
-      if (event.target.classList.contains("cell")) {
-        const coords = this.getCellCoordinates(event.target);
-        if (coords) {
-          callback(coords.x, coords.y);
-        }
+      const cell = event.target.closest(".cell");
+
+      if (!cell || !this.gridElement.contains(cell)) return;
+
+      const coords = this.getCellCoordinates(cell);
+      if (coords) {
+        callback(coords.x, coords.y);
       }
     });
   }
