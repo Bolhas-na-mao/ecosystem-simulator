@@ -2,6 +2,7 @@ import { GameState } from "./state.js";
 import { Timer } from "./timer.js";
 import { Grid } from "./grid.js";
 import { UI } from "./ui.js";
+import { GRID_SIZE } from "./grid.js";
 
 class Game {
   constructor() {
@@ -81,8 +82,8 @@ class Game {
       return;
     }
 
-    for (let x = 0; x < 25; x++) {
-      for (let y = 0; y < 25; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      for (let y = 0; y < GRID_SIZE; y++) {
         window.Module._removeEntity(x, y);
       }
     }

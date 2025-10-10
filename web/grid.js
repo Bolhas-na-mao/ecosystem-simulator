@@ -1,4 +1,4 @@
-const GRID_SIZE = 25;
+export const GRID_SIZE = 25;
 const ENTITY_FOX = 1;
 const ENTITY_RABBIT = 2;
 const ENTITY_GRASS = 3;
