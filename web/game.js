@@ -164,9 +164,11 @@ class Game {
 }
 
 window.addEventListener("load", () => {
-  setTimeout(() => {
-    if (typeof window.Module !== "undefined" && window.Module._initializeEcosystem) {
-      new Game();
-    }
-  }, 100);
+  window.Module = window.Module || {};
+  if (window.Module._initializeEcosystem) {
+    new Game();
+  } else {
+    window.Module.onRuntimeInitialized = () => new Game();
+  }
 });
+
