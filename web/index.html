@@ -12,6 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
   </head>
   <body>
     <div class="container">
@@ -22,12 +23,77 @@
       <div class="right-section">
         <div class="timer">
           <div class="timer-label">Tempo</div>
-          <div class="timer-value">12:32</div>
+          <div class="timer-value" id="timer-value">00:00</div>
         </div>
-        <button class="start-button" id="start-button">Iniciar</button>
+        <div class="controls">
+          <button class="control-button" id="play-pause-button">Iniciar</button>
+          <button
+            class="control-button icon-button"
+            id="clear-button"
+            title="Limpar tudo"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            class="control-button icon-button"
+            id="restart-button"
+            title="Reiniciar"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path
+                d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="entity-selector">
+          <div class="entity-option" data-entity="1">
+            <img src="assets/fox.png" alt="Fox" class="selector-sprite" />
+          </div>
+          <div class="entity-option" data-entity="2">
+            <img src="assets/rabbit.png" alt="Rabbit" class="selector-sprite" />
+          </div>
+          <div class="entity-option" data-entity="3">
+            <img src="assets/grass.png" alt="Grass" class="selector-sprite" />
+          </div>
+        </div>
+        <div class="rules">
+          <h3>Como Funciona</h3>
+          <div class="rule-item">
+            <img src="assets/grass.png" alt="Grama" class="rule-icon" />
+            <span>Cresce naturalmente e alimenta coelhos</span>
+          </div>
+          <div class="rule-item">
+            <img src="assets/rabbit.png" alt="Coelho" class="rule-icon" />
+            <span>Come grama e se reproduz com energia cheia</span>
+          </div>
+          <div class="rule-item">
+            <img src="assets/fox.png" alt="Raposa" class="rule-icon" />
+            <span>Caça coelhos e se reproduz com energia cheia</span>
+          </div>
+          <div class="rule-note">
+            Objetivo: manter todas espécies vivas<br />
+            pelo maior tempo possível
+          </div>
+        </div>
       </div>
     </div>
-    <script src="render.js"></script>
+    <div class="modal" id="game-over-modal">
+      <div class="modal-content">
+        <h2>Fim de Jogo</h2>
+        <p id="extinction-message"></p>
+        <button class="control-button" id="modal-restart-button">
+          Reiniciar
+        </button>
+      </div>
+    </div>
     <script src="ecosystem.js"></script>
+    <script type="module" src="game.js"></script>
   </body>
 </html>
