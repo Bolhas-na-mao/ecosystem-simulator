@@ -44,8 +44,8 @@ export class UI {
 
   showGameOver(extinctEntity) {
     const message =
-      extinctEntity === "Raposas"
-        ? `${extinctEntity} foram extintas!`
+      extinctEntity === "Raposas" || extinctEntity === "Grama"
+        ? `${extinctEntity} foi extinta!`
         : `${extinctEntity} foram extintos!`;
     this.extinctionMessage.textContent = message;
     this.gameOverModal.classList.add("visible");
