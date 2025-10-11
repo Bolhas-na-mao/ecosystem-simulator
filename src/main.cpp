@@ -8,7 +8,10 @@
 #include "entities/World.h"
 #include "utils/Log.h"
 
+enum class GameState { IDLE = 0, RUNNING = 1, PAUSED = 2, GAMEOVER = 3 };
+
 World* gameWorld = nullptr;
+GameState currentGameState = GameState::IDLE;
 
 extern "C" {
 EMSCRIPTEN_KEEPALIVE
@@ -17,6 +20,7 @@ void initializeEcosystem() {
         delete gameWorld;
     }
     gameWorld = new World(15, 15, 15);
+    currentGameState = GameState::IDLE;
     std::cout << "Ecosystem initialized with 15 foxes, 15 rabbits, 15 grass!\n";
 }
 
@@ -136,6 +140,54 @@ EMSCRIPTEN_KEEPALIVE
 void hello_ecosystem() {
     std::cout << "Ecosystem Simulator initialized!\n";
     logWorld();
+}
+
+EMSCRIPTEN_KEEPALIVE
+int getGameState() {
+    return static_cast<int>(currentGameState);
+}
+
+EMSCRIPTEN_KEEPALIVE
+void setGameState(int state) {
+    if(state >= 0 && state <= 3) {
+        currentGameState = static_cast<GameState>(state);
+    }
+}
+
+EMSCRIPTEN_KEEPALIVE
+bool isGameOver() {
+    return currentGameState == GameState::GAMEOVER;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int checkExtinction() {
+    if(gameWorld == nullptr) {
+        return 0;
+    }
+
+    int foxCount = countEntityType(1);
+    int rabbitCount = countEntityType(2);
+    int grassCount = countEntityType(3);
+
+    if(foxCount == 0) {
+        currentGameState = GameState::GAMEOVER;
+        return 1;
+    }
+    if(rabbitCount == 0) {
+        currentGameState = GameState::GAMEOVER;
+        return 2;
+    }
+    if(grassCount == 0) {
+        currentGameState = GameState::GAMEOVER;
+        return 3;
+    }
+
+    return 0;
+}
+
+EMSCRIPTEN_KEEPALIVE
+bool canPlaceEntity() {
+    return currentGameState == GameState::IDLE;
 }
 }
 
