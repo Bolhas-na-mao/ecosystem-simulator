@@ -1,21 +1,27 @@
+const GameStateEnum = {
+  IDLE: 0,
+  RUNNING: 1,
+  PAUSED: 2,
+  GAMEOVER: 3
+};
+
 export const GameState = {
-  current: "idle",
   selectedEntity: null,
 
   isIdle() {
-    return this.current === "idle";
+    return window.Module._getGameState() === GameStateEnum.IDLE;
   },
 
   isPaused() {
-    return this.current === "paused";
+    return window.Module._getGameState() === GameStateEnum.PAUSED;
   },
 
   isRunning() {
-    return this.current === "running";
+    return window.Module._getGameState() === GameStateEnum.RUNNING;
   },
 
   isGameOver() {
-    return this.current === "gameover";
+    return window.Module._getGameState() === GameStateEnum.GAMEOVER;
   },
 
   canSelectEntity() {
@@ -23,22 +29,22 @@ export const GameState = {
   },
 
   canPlaceEntity() {
-    return this.isIdle();
+    return window.Module._canPlaceEntity();
   },
 
   setIdle() {
-    this.current = "idle";
+    window.Module._setGameState(GameStateEnum.IDLE);
   },
 
   setPaused() {
-    this.current = "paused";
+    window.Module._setGameState(GameStateEnum.PAUSED);
   },
 
   setRunning() {
-    this.current = "running";
+    window.Module._setGameState(GameStateEnum.RUNNING);
   },
 
   setGameOver() {
-    this.current = "gameover";
+    window.Module._setGameState(GameStateEnum.GAMEOVER);
   }
 };

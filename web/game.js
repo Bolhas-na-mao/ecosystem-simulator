@@ -140,17 +140,16 @@ class Game {
   }
 
   checkExtinction() {
-    const foxCount = window.Module._countEntityType(1);
-    const rabbitCount = window.Module._countEntityType(2);
-    const grassCount = window.Module._countEntityType(3);
+    const extinctEntityType = window.Module._checkExtinction();
 
-    let extinctEntity = null;
-    if (foxCount === 0) extinctEntity = "Raposas";
-    else if (rabbitCount === 0) extinctEntity = "Coelhos";
-    else if (grassCount === 0) extinctEntity = "Grama";
+    const entityNames = {
+      1: "Raposas",
+      2: "Coelhos",
+      3: "Grama"
+    };
 
-    if (extinctEntity) {
-      this.gameOver(extinctEntity);
+    if (extinctEntityType !== 0) {
+      this.gameOver(entityNames[extinctEntityType]);
     }
   }
 
