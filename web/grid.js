@@ -7,6 +7,7 @@ export class Grid {
   constructor(gridElement) {
     this.gridElement = gridElement;
     this.cells = [];
+    this.isMouseDown = false;
     this.createCells();
   }
 
@@ -60,7 +61,10 @@ export class Grid {
   }
 
   onCellClick(callback) {
-    this.gridElement.addEventListener("click", (event) => {
+    this.gridElement.addEventListener("mousedown", (event) => {
+      if (event.button !== 0) return;
+
+      this.isMouseDown = true;
       const cell = event.target.closest(".cell");
 
       if (!cell || !this.gridElement.contains(cell)) return;
@@ -69,6 +73,29 @@ export class Grid {
       if (coords) {
         callback(coords.x, coords.y);
       }
+    });
+
+    this.gridElement.addEventListener("mouseover", (event) => {
+      if (!this.isMouseDown) return;
+
+      const cell = event.target.closest(".cell");
+
+      if (!cell || !this.gridElement.contains(cell)) return;
+
+      const coords = this.getCellCoordinates(cell);
+      if (coords) {
+        callback(coords.x, coords.y);
+      }
+    });
+
+    document.addEventListener("mouseup", (event) => {
+      if (event.button === 0) {
+        this.isMouseDown = false;
+      }
+    });
+
+    this.gridElement.addEventListener("dragstart", (event) => {
+      event.preventDefault();
     });
   }
 }
