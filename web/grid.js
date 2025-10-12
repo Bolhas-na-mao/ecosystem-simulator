@@ -78,7 +78,14 @@ export class Grid {
   }
 
   onCellClick(callback) {
-    this.gridElement.addEventListener("mousedown", (event) => {
+    if (this._onMouseDown) {
+      this.gridElement.removeEventListener("mousedown", this._onMouseDown);
+    }
+    if (this._onMouseOver) {
+      this.gridElement.removeEventListener("mouseover", this._onMouseOver);
+    }
+
+    this._onMouseDown = (event) => {
       if (event.button !== 0) return;
 
       this.isMouseDown = true;
@@ -90,9 +97,9 @@ export class Grid {
       if (coords) {
         callback(coords.x, coords.y);
       }
-    });
+    };
 
-    this.gridElement.addEventListener("mouseover", (event) => {
+    this._onMouseOver = (event) => {
       if (!this.isMouseDown) return;
 
       const cell = event.target.closest(".cell");
@@ -103,11 +110,21 @@ export class Grid {
       if (coords) {
         callback(coords.x, coords.y);
       }
-    });
+    };
+
+    this.gridElement.addEventListener("mousedown", this._onMouseDown);
+    this.gridElement.addEventListener("mouseover", this._onMouseOver);
   }
 
   destroy() {
     document.removeEventListener("mouseup", this._onMouseUp);
     this.gridElement.removeEventListener("dragstart", this._onDragStart);
+
+    if (this._onMouseDown) {
+      this.gridElement.removeEventListener("mousedown", this._onMouseDown);
+    }
+    if (this._onMouseOver) {
+      this.gridElement.removeEventListener("mouseover", this._onMouseOver);
+    }
   }
 }
