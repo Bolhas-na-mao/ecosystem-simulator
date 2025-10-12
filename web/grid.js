@@ -8,7 +8,24 @@ export class Grid {
     this.gridElement = gridElement;
     this.cells = [];
     this.isMouseDown = false;
+
+    this._onMouseUp = this._handleMouseUp.bind(this);
+    this._onDragStart = this._handleDragStart.bind(this);
+
     this.createCells();
+
+    document.addEventListener("mouseup", this._onMouseUp);
+    this.gridElement.addEventListener("dragstart", this._onDragStart);
+  }
+
+  _handleMouseUp(event) {
+    if (event.button === 0) {
+      this.isMouseDown = false;
+    }
+  }
+
+  _handleDragStart(event) {
+    event.preventDefault();
   }
 
   createCells() {
@@ -87,15 +104,10 @@ export class Grid {
         callback(coords.x, coords.y);
       }
     });
+  }
 
-    document.addEventListener("mouseup", (event) => {
-      if (event.button === 0) {
-        this.isMouseDown = false;
-      }
-    });
-
-    this.gridElement.addEventListener("dragstart", (event) => {
-      event.preventDefault();
-    });
+  destroy() {
+    document.removeEventListener("mouseup", this._onMouseUp);
+    this.gridElement.removeEventListener("dragstart", this._onDragStart);
   }
 }
