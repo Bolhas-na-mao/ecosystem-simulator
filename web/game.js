@@ -4,6 +4,16 @@ import { Grid } from "./grid.js";
 import { UI } from "./ui.js";
 import { GRID_SIZE } from "./grid.js";
 
+const ENTITY_FOX = 1;
+const ENTITY_RABBIT = 2;
+const ENTITY_GRASS = 3;
+
+const ENTITY_NAMES = {
+  [ENTITY_FOX]: "Raposas",
+  [ENTITY_RABBIT]: "Coelhos",
+  [ENTITY_GRASS]: "Grama",
+};
+
 class Game {
   constructor() {
     this.timer = new Timer(document.getElementById("timer-value"));
@@ -142,14 +152,8 @@ class Game {
   checkExtinction() {
     const extinctEntityType = window.Module._checkExtinction();
 
-    const entityNames = {
-      1: "Raposas",
-      2: "Coelhos",
-      3: "Grama"
-    };
-
     if (extinctEntityType !== 0) {
-      this.gameOver(entityNames[extinctEntityType]);
+      this.gameOver(ENTITY_NAMES[extinctEntityType]);
     }
   }
 
@@ -170,4 +174,3 @@ window.addEventListener("load", () => {
     window.Module.onRuntimeInitialized = () => new Game();
   }
 });
-
