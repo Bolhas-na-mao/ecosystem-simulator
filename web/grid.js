@@ -7,7 +7,25 @@ export class Grid {
   constructor(gridElement) {
     this.gridElement = gridElement;
     this.cells = [];
+    this.isMouseDown = false;
+
+    this._onMouseUp = this._handleMouseUp.bind(this);
+    this._onDragStart = this._handleDragStart.bind(this);
+
     this.createCells();
+
+    document.addEventListener("mouseup", this._onMouseUp);
+    this.gridElement.addEventListener("dragstart", this._onDragStart);
+  }
+
+  _handleMouseUp(event) {
+    if (event.button === 0) {
+      this.isMouseDown = false;
+    }
+  }
+
+  _handleDragStart(event) {
+    event.preventDefault();
   }
 
   createCells() {
@@ -60,7 +78,17 @@ export class Grid {
   }
 
   onCellClick(callback) {
-    this.gridElement.addEventListener("click", (event) => {
+    if (this._onMouseDown) {
+      this.gridElement.removeEventListener("mousedown", this._onMouseDown);
+    }
+    if (this._onMouseOver) {
+      this.gridElement.removeEventListener("mouseover", this._onMouseOver);
+    }
+
+    this._onMouseDown = (event) => {
+      if (event.button !== 0) return;
+
+      this.isMouseDown = true;
       const cell = event.target.closest(".cell");
 
       if (!cell || !this.gridElement.contains(cell)) return;
@@ -69,6 +97,34 @@ export class Grid {
       if (coords) {
         callback(coords.x, coords.y);
       }
-    });
+    };
+
+    this._onMouseOver = (event) => {
+      if (!this.isMouseDown) return;
+
+      const cell = event.target.closest(".cell");
+
+      if (!cell || !this.gridElement.contains(cell)) return;
+
+      const coords = this.getCellCoordinates(cell);
+      if (coords) {
+        callback(coords.x, coords.y);
+      }
+    };
+
+    this.gridElement.addEventListener("mousedown", this._onMouseDown);
+    this.gridElement.addEventListener("mouseover", this._onMouseOver);
+  }
+
+  destroy() {
+    document.removeEventListener("mouseup", this._onMouseUp);
+    this.gridElement.removeEventListener("dragstart", this._onDragStart);
+
+    if (this._onMouseDown) {
+      this.gridElement.removeEventListener("mousedown", this._onMouseDown);
+    }
+    if (this._onMouseOver) {
+      this.gridElement.removeEventListener("mouseover", this._onMouseOver);
+    }
   }
 }
