@@ -1,5 +1,7 @@
 # Simulador de Ecossistema
 
+> Línguas: **Português (BR)** | [English](README.en.md)
+
 Um jogo de simulação onde você gerencia um ecossistema com grama, coelhos e raposas.
 
 ## Como Funciona
