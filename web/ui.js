@@ -13,6 +13,14 @@ export class UI {
     this.playPauseButton.textContent = text;
   }
 
+  enableStartButton() {
+    this.playPauseButton.disabled = false;
+  }
+
+  disableStartButton() {
+    this.playPauseButton.disabled = true;
+  }
+
   selectEntity(entityType) {
     this.entityOptions.forEach((option) => {
       const optionType = parseInt(option.dataset.entity);
