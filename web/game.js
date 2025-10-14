@@ -23,14 +23,31 @@ class Game {
     this.isWasmReady = false;
 
     this.setupEventHandlers();
-    this.initialize();
   }
 
   initialize() {
-    window.Module._initializeEcosystem();
-    this.isWasmReady = true;
-    this.grid.render();
-    this.updateStartButtonState();
+    try {
+      if (typeof window.Module._initializeEcosystem !== "function") {
+        console.error("WASM module not properly initialized");
+        this.showWasmError();
+        return;
+      }
+
+      window.Module._initializeEcosystem();
+      this.isWasmReady = true;
+      this.grid.render();
+      this.updateStartButtonState();
+    } catch (error) {
+      console.error("Failed to initialize ecosystem:", error);
+      this.showWasmError();
+    }
+  }
+
+  showWasmError() {
+    const gridElement = document.getElementById("grid");
+    gridElement.innerHTML =
+      '<div style="grid-column: 1/-1; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px; color: var(--color-forest-dark);">Erro ao carregar simulador.<br>Tente recarregar a página.</div>';
+    this.ui.disableStartButton();
   }
 
   setupEventHandlers() {
@@ -104,6 +121,8 @@ class Game {
   }
 
   handleRestart() {
+    if (!this.isWasmReady) return;
+
     this.stopGameLoop();
     this.timer.reset();
     GameState.setIdle();
@@ -112,9 +131,15 @@ class Game {
     this.ui.deselectAllEntities();
     this.ui.enableEntitySelection();
     this.ui.hideGameOver();
-    window.Module._initializeEcosystem();
-    this.grid.render();
-    this.updateStartButtonState();
+
+    try {
+      window.Module._initializeEcosystem();
+      this.grid.render();
+      this.updateStartButtonState();
+    } catch (error) {
+      console.error("Failed to restart ecosystem:", error);
+      this.showWasmError();
+    }
   }
 
   handleClear() {
@@ -203,11 +228,34 @@ class Game {
   }
 }
 
-window.addEventListener("load", () => {
-  window.Module = window.Module || {};
-  if (window.Module._initializeEcosystem) {
-    new Game();
-  } else {
-    window.Module.onRuntimeInitialized = () => new Game();
+window.Module = window.Module || {};
+let gameInstance = null;
+
+const originalOnRuntimeInitialized = window.Module.onRuntimeInitialized;
+window.Module.onRuntimeInitialized = function () {
+  console.log("WASM runtime initialized");
+  if (originalOnRuntimeInitialized) {
+    originalOnRuntimeInitialized();
   }
+  if (gameInstance) {
+    gameInstance.initialize();
+  }
+};
+
+window.addEventListener("load", () => {
+  gameInstance = new Game();
+
+  if (window.Module.calledRun) {
+    console.log("WASM already initialized on load");
+    gameInstance.initialize();
+  } else {
+    console.log("Waiting for WASM to initialize...");
+  }
+
+  setTimeout(() => {
+    if (gameInstance && !gameInstance.isWasmReady) {
+      console.error("WASM failed to initialize within timeout");
+      gameInstance.showWasmError();
+    }
+  }, 10000);
 });
