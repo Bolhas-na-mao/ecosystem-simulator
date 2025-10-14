@@ -20,6 +20,7 @@ class Game {
     this.grid = new Grid(document.getElementById("grid"));
     this.ui = new UI();
     this.gameInterval = null;
+    this.isWasmReady = false;
 
     this.setupEventHandlers();
     this.initialize();
@@ -27,7 +28,9 @@ class Game {
 
   initialize() {
     window.Module._initializeEcosystem();
+    this.isWasmReady = true;
     this.grid.render();
+    this.updateStartButtonState();
   }
 
   setupEventHandlers() {
@@ -38,8 +41,34 @@ class Game {
     this.grid.onCellClick((x, y) => this.handleCellClick(x, y));
   }
 
+  hasAnyEntities() {
+    if (!this.isWasmReady) {
+      return false;
+    }
+    const foxCount = window.Module._countEntityType(ENTITY_FOX);
+    const rabbitCount = window.Module._countEntityType(ENTITY_RABBIT);
+    const grassCount = window.Module._countEntityType(ENTITY_GRASS);
+    return foxCount > 0 || rabbitCount > 0 || grassCount > 0;
+  }
+
+  updateStartButtonState() {
+    if (!this.isWasmReady) {
+      this.ui.disableStartButton();
+      return;
+    }
+
+    if (GameState.isIdle() && !this.hasAnyEntities()) {
+      this.ui.disableStartButton();
+    } else {
+      this.ui.enableStartButton();
+    }
+  }
+
   handlePlayPause() {
     if (GameState.isIdle()) {
+      if (!this.hasAnyEntities()) {
+        return;
+      }
       this.startGame();
     } else if (GameState.isRunning()) {
       this.pauseGame();
@@ -85,12 +114,18 @@ class Game {
     this.ui.hideGameOver();
     window.Module._initializeEcosystem();
     this.grid.render();
+    this.updateStartButtonState();
   }
 
   handleClear() {
-    if (!GameState.isIdle()) {
-      return;
-    }
+    this.stopGameLoop();
+    this.timer.reset();
+    GameState.setIdle();
+    GameState.selectedEntity = null;
+    this.ui.setPlayPauseText("Iniciar");
+    this.ui.deselectAllEntities();
+    this.ui.enableEntitySelection();
+    this.ui.hideGameOver();
 
     for (let x = 0; x < GRID_SIZE; x++) {
       for (let y = 0; y < GRID_SIZE; y++) {
@@ -98,6 +133,7 @@ class Game {
       }
     }
     this.grid.render();
+    this.updateStartButtonState();
   }
 
   handleEntitySelect(entityType) {
@@ -132,6 +168,7 @@ class Game {
     }
 
     this.grid.render();
+    this.updateStartButtonState();
   }
 
   startGameLoop() {
